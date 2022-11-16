@@ -1,0 +1,7 @@
+{
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true,
+    "python.formatting.provider": "black",
+    // Only works with Poetry and venvs in project
+    "python.formatting.blackPath": "./.venv/bin/black"
+}
