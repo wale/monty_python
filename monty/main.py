@@ -2,6 +2,7 @@ import asyncio
 import os
 
 import discord
+from loguru import logger
 
 from monty.bot import MontyBot
 from monty.util.config import Config
@@ -31,7 +32,10 @@ async def run() -> None:
 
 def main() -> None:
     loop = asyncio.get_event_loop()
-    loop.run_until_complete(run())
+    try:
+        loop.run_until_complete(run())
+    except Exception as e:
+        logger.error(f"Bot errorred. {e}")
 
 
 if __name__ == "__main__":

@@ -1,7 +1,19 @@
 {
-    "editor.formatOnSave": true,
-    "editor.formatOnPaste": true,
-    "python.formatting.provider": "black",
-    // Only works with Poetry and venvs in project
-    "python.formatting.blackPath": "./.venv/bin/black"
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.black-formatter",
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": true
+        },
+    },
+    "isort.args": [
+        "--profile",
+        "black"
+    ],
+    "isort.path": ["poetry", "run", "isort"],
+    "isort.check": true,
+    "isort.severity": {
+        "W": "Warning",
+        "E": "Error"
+    },
 }
