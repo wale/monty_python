@@ -36,6 +36,10 @@ def main() -> None:
         loop.run_until_complete(run())
     except Exception as e:
         logger.error(f"Bot errorred. {e}")
+    except KeyboardInterrupt as e:
+        print("\t")
+        logger.error(f"Keyboard interrupt call caught. Exiting.")
+        exit(0)
 
 
 if __name__ == "__main__":
