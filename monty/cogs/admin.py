@@ -18,7 +18,7 @@ class Admin(commands.Cog):
     async def load(self, ctx: BotContext, name: str) -> None:
         """Loads a cog."""
         try:
-            await self.bot.load_extension(f"monty.cogs.{name}")
+            self.bot.load_extension(f"monty.cogs.{name}")
         except Exception as e:
             return await ctx.send(traceback_maker(e))
         await ctx.send(f"Loaded extension **{name}.py**!")
@@ -28,7 +28,7 @@ class Admin(commands.Cog):
     async def unload(self, ctx: BotContext, name: str) -> None:
         """Unloads a cog."""
         try:
-            await self.bot.unload_extension(f"monty.cogs.{name}")
+            self.bot.unload_extension(f"monty.cogs.{name}")
         except Exception as e:
             return await ctx.send(traceback_maker(e))
         await ctx.send(f"Unoaded extension **{name}.py**!")
@@ -38,7 +38,7 @@ class Admin(commands.Cog):
     async def reload(self, ctx: BotContext, name: str) -> None:
         """Loads a cog."""
         try:
-            await self.bot.reload_extension(f"monty.cogs.{name}")
+            self.bot.reload_extension(f"monty.cogs.{name}")
         except Exception as e:
             return await ctx.send(traceback_maker(e))
         await ctx.send(f"Reloaded extension **{name}.py**!")
@@ -52,7 +52,7 @@ class Admin(commands.Cog):
             if file.endswith(".py"):
                 name = file[:-3]
                 try:
-                    await self.bot.reload_extension(f"monty.cogs.{name}")
+                    self.bot.reload_extension(f"monty.cogs.{name}")
                 except Exception as e:
                     error_collection.append([file, traceback_maker(e, advance=False)])
 
@@ -66,3 +66,7 @@ class Admin(commands.Cog):
             )
 
         await ctx.send("Successfully reloaded all extensions!")
+
+
+def setup(bot: MontyBot) -> None:
+    bot.add_cog(Admin(bot))

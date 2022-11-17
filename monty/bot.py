@@ -5,7 +5,6 @@ import discord
 from discord.ext import bridge, commands
 from loguru import logger
 
-from monty.util import permissions
 from monty.util.config import Config
 from prisma import Prisma
 

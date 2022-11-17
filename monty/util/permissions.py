@@ -4,6 +4,7 @@ import discord
 from discord.ext import commands
 
 from .config import Config
+from .context import BotContext
 
 
 def bot_has_permission(ctx: commands.Context | discord.Message, permission: str):
@@ -13,5 +14,5 @@ def bot_has_permission(ctx: commands.Context | discord.Message, permission: str)
     )
 
 
-def author_is_owner(ctx: commands.Context):
-    return ctx.author.id in ctx.bot.owners
+def author_is_owner(ctx: BotContext):
+    return ctx.author.id in ctx.bot.config["bot"]["owners"]
