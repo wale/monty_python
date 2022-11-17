@@ -17,6 +17,7 @@ class Weather(commands.Cog):
 
     @commands.command()
     async def weather(self, ctx: BotContext, *location):
+        """Provides weather data, sourced from OpenWeatherMap."""
         key = self.bot.config["bot"]["api"]["openWeatherMap"]
 
         async with httpx.AsyncClient() as client:

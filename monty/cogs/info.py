@@ -13,6 +13,7 @@ class Info(commands.Cog):
 
     @commands.command()
     async def ping(self, ctx: BotContext):
+        """Pong!"""
         before = time.monotonic()
         message = await ctx.send("Pong...")
 

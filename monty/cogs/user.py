@@ -22,7 +22,8 @@ class User(commands.Cog):
         self.bot: MontyBot = bot
 
     @bridge.bridge_command()
-    async def pronounset(self, ctx: bridge.BridgeExtContext) -> None:
+    async def pronounsetup(self, ctx: bridge.BridgeExtContext) -> None:
+        """Setup function for user-provided pronouns."""
         await ctx.respond(
             "You can start the setup by clicking the below button.", view=EntryView()
         )
