@@ -2,7 +2,7 @@ import discord
 from discord.ext import bridge, commands
 
 from monty.bot import MontyBot
-from monty.modals.pronounsetup import PronounSetupModal
+from monty.modals.pronounsetup import PronounChoice
 from monty.util.context import BotContext
 
 
@@ -11,7 +11,10 @@ class EntryView(discord.ui.View):
     async def button_callback(
         self, button: discord.ui.Button, interaction: discord.Interaction
     ):
-        await interaction.response.send_modal(PronounSetupModal(title="Pronoun Setup"))
+        await interaction.response.edit_message(
+            content="Select your pronouns, or you can use a custom one.",
+            view=PronounChoice(),
+        )
 
 
 class User(commands.Cog):

@@ -1,6 +1,50 @@
 import discord
 
 
+class PronounChoice(discord.ui.View):
+    @discord.ui.select(
+        placeholder="Select your pronoun choice.",
+        min_values=1,
+        max_values=1,
+        options=[
+            discord.SelectOption(label="he/him/his/his/himself"),
+            discord.SelectOption(label="she/her/her/hers/herself"),
+            discord.SelectOption(label="they/them/their/theirs/themselves"),
+            discord.SelectOption(label="Custom Pronouns"),
+        ],
+    )
+    async def select_callback(self, select, interaction: discord.Interaction):
+        if select.values[0] == "Custom Pronouns":
+            await interaction.response.send_modal(
+                PronounSetupModal(title="Custom Pronouns")
+            )
+        else:
+            pronoun_split = select.values[0].split("/")
+
+            subject = pronoun_split[0]
+            objectPro = pronoun_split[1]
+            posDet = pronoun_split[2]
+            posPro = pronoun_split[3]
+            reflexive = pronoun_split[4]
+
+            embed = discord.Embed()
+            embed.description = "Pronoun Confirmation"
+            embed.add_field(
+                name="Example",
+                value=f"""
+                **{subject.capitalize()}** (*subject*) went to the park.
+                I went with **{objectPro}** (object).
+                **{subject.capitalize()}** (*subject*)  brought **{posDet}** (*pos. determiner*) frisbee.
+                At least, I think it was **{posPro}** (*possessive*).
+                **{subject.capitalize()}** (*subject*) threw the frisbee to **{reflexive}** (*reflexive*).
+            """,
+            )
+
+            await interaction.response.send_message(
+                embed=embed, view=PronounConfirmation()
+            )
+
+
 class PronounSetupModal(discord.ui.Modal):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
