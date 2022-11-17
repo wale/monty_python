@@ -16,6 +16,8 @@ isort = "^5.10.1"
 httpx = "^0.23.0"
 prisma = "^0.7.1"
 envtoml = "^0.1.2"
+alembic = "^1.8.1"
+sqlmodel = "^0.0.8"
 
 [tool.poetry.scripts]
 monty = "monty.main:main"
@@ -26,3 +28,4 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.isort]
 profile = "black"
+extend_skip_glob = ["alembic/*"]
