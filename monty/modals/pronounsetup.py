@@ -53,11 +53,11 @@ class PronounSetupModal(discord.ui.Modal):
         embed.add_field(
             name="Example",
             value=f"""
-            **{subject.capitalize()}** (subject) went to the park.
+            **{subject.capitalize()}** (*subject*) went to the park.
             I went with **{objectPro}** (object).
-            **{subject.capitalize()}**  brought **{posDet}** (pos. determiner) frisbee.
-            At least, I think it was **{posPro}** (possessive).
-            **{subject.capitalize()}** (subject) threw the frisbee to **{reflexive}** (reflexive).
+            **{subject.capitalize()}** (*subject*)  brought **{posDet}** (*pos. determiner*) frisbee.
+            At least, I think it was **{posPro}** (*possessive*).
+            **{subject.capitalize()}** (*subject*) threw the frisbee to **{reflexive}** (*reflexive*).
         """,
         )
 
