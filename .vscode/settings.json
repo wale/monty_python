@@ -16,4 +16,5 @@
         "W": "Warning",
         "E": "Error"
     },
+    "discord.enabled": false,
 }

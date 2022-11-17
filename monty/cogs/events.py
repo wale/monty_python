@@ -93,14 +93,14 @@ class Events(commands.Cog):
         ):
             return
 
-        await self.process_commands(message)
+        await self.bot.process_commands(message)
 
     @commands.Cog.listener()
     async def on_interaction(self, interaction: discord.Interaction):
         if not self.bot.is_ready() or not interaction.permissions.send_messages:
             return
 
-        await self.process_application_commands(interaction)
+        await self.bot.process_application_commands(interaction)
 
     @commands.Cog.listener()
     async def on_command(self, ctx: BotContext):

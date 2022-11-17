@@ -165,3 +165,6 @@ config.bot.toml
 
 # Poetry lockfile
 poetry.lock
+
+# Environment variables
+.env

@@ -23,6 +23,7 @@ class Weather(commands.Cog):
             r = await client.get(
                 f"https://api.openweathermap.org/data/2.5/weather?q={','.join(location)}&appid={key}"
             )
+
             result = r.text
 
             json_result = json.loads(result)

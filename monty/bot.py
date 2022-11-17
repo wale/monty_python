@@ -2,22 +2,26 @@ import os
 from datetime import datetime
 
 import discord
-from discord.ext import commands
+from discord.ext import bridge, commands
 from loguru import logger
 
 from monty.util import permissions
 from monty.util.config import Config
+from prisma import Prisma
 
 
-class MontyBot(commands.AutoShardedBot):
+class MontyBot(bridge.AutoShardedBot):
     def __init__(self, *args, prefix: str = None, config: dict = None, **kwargs):
         super().__init__(*args, command_prefix=prefix, **kwargs)
         self.prefix = prefix
         self.uptime: datetime = None
         self.config = config
+        self.prisma = Prisma()
 
     @commands.Cog.listener()
     async def on_connect(self) -> None:
+        await self.prisma.connect()
+
         try:
             for file in os.listdir("monty/cogs"):
                 if file.endswith(".py") and not file.startswith("__init__"):
