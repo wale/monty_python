@@ -6,7 +6,9 @@ Wants=network-online.target
 [Service]
 Restart=always
 Type=simple
-ExecStart="${poetry_path} run monty"
+User=${owner}
+Group=${group}
+ExecStart=${poetry_path} run monty
 WorkingDirectory=${monty_root}
 Environment=
 
