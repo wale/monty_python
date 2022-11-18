@@ -257,5 +257,5 @@ class PronounConfirmation(discord.ui.View):
     ):
         if self.user_id != interaction.user.id:  # type: ignore
             return
-
-        await interaction.delete_original_message()
+        else:
+            await interaction.delete_original_message()
