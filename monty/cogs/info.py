@@ -9,6 +9,7 @@ import psutil
 from discord.ext import commands
 from loguru import logger
 
+from monty import __version__
 from monty.bot import MontyBot
 from monty.util.context import BotContext
 from monty.util.date import date
@@ -40,13 +41,14 @@ class Info(commands.Cog):
         embed = CustomEmbed(ctx)  # type: ignore
         embed.set_thumbnail(url=ctx.bot.user.avatar)  # type: ignore
         embed.add_field(name="Last boot", value=date(self.bot.uptime, ago=True))
+        embed.add_field(name="Version", value=__version__)
         embed.add_field(
             name=f"Developer{'' if len(self.bot.config['bot']['owners']) == 1 else 's'}",
             value=", ".join(
                 [str(self.bot.get_user(x)) for x in self.bot.config["bot"]["owners"]]
             ),
         )
-        embed.add_field(name="Library", value="discord.py")
+        embed.add_field(name="Library", value=f"pycord {discord.__version__}")
         embed.add_field(
             name="Servers",
             value=f"{len(ctx.bot.guilds)} ( avg: {avgmembers:,.2f} users/server )",
