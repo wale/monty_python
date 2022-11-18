@@ -51,7 +51,7 @@ class EntryView(discord.ui.View):
     ):
         await interaction.response.edit_message(
             content="Select your pronouns, or you can use a custom one.",
-            view=PronounChoice(timeout=60),
+            view=PronounChoice(timeout=60, user_id=interaction.user.id),  # type: ignore
         )
 
 

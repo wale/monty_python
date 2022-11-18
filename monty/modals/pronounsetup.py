@@ -9,6 +9,10 @@ from monty.util.traceback import log_traceback_maker
 
 
 class PronounChoice(discord.ui.View):
+    def __init__(self, user_id: int, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.user_id = user_id
+
     @discord.ui.select(
         placeholder="Select your pronoun choice.",
         min_values=1,
@@ -24,11 +28,12 @@ class PronounChoice(discord.ui.View):
     async def select_callback(self, select, interaction: discord.Interaction):
         if select.values[0] == "Custom Pronouns":
             await interaction.response.send_modal(
-                PronounSetupModal(title="Custom Pronouns")
+                PronounSetupModal(title="Custom Pronouns", user_id=interaction.user.id)  # type: ignore
             )
         elif select.values[0] == "Clear Pronouns":
             user_id = interaction.user.id  # type: ignore
-
+            if user_id != self.user_id:
+                return
             with Session(engine) as session:
 
                 statement = sel(User, Pronoun).where(User.id == user_id).join(Pronoun)
@@ -81,13 +86,15 @@ class PronounChoice(discord.ui.View):
             )
 
             await interaction.response.edit_message(
-                embed=embed, view=PronounConfirmation(pronouns=pronoun_split)
+                embed=embed,
+                view=PronounConfirmation(pronouns=pronoun_split, user_id=self.user_id),
             )
 
 
 class PronounSetupModal(discord.ui.Modal):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, user_id: int, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.user_id = user_id
 
         self.add_item(
             discord.ui.InputText(
@@ -126,6 +133,9 @@ class PronounSetupModal(discord.ui.Modal):
         )
 
     async def callback(self, interaction: discord.Interaction):
+        if self.user_id != interaction.user.id:  # type: ignore
+            return
+
         subject = str(self.children[0].value)  # required to make type checking stfu
         objectPro = self.children[1].value
         posDet = self.children[2].value
@@ -148,14 +158,16 @@ class PronounSetupModal(discord.ui.Modal):
         )
 
         await interaction.response.edit_message(
-            embed=embed, view=PronounConfirmation(pronouns=pronoun_list)
+            embed=embed,
+            view=PronounConfirmation(pronouns=pronoun_list, user_id=self.user_id),
         )
 
 
 class PronounConfirmation(discord.ui.View):
-    def __init__(self, pronouns: list, *args, **kwargs):
+    def __init__(self, pronouns: list, user_id: int, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.pronouns = pronouns
+        self.user_id = user_id
 
     @discord.ui.button(label="Confirm", row=0, style=discord.ButtonStyle.success)
     async def confirm_callback(
@@ -243,5 +255,7 @@ class PronounConfirmation(discord.ui.View):
     async def cancel_callback(
         self, button: discord.Button, interaction: discord.Interaction
     ):
+        if self.user_id != interaction.user.id:  # type: ignore
+            return
+
         await interaction.delete_original_message()
-        await interaction.response.send_message("Cancelled!")
