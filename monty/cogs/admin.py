@@ -14,37 +14,37 @@ class Admin(commands.Cog):
         self.bot: MontyBot = bot
 
     @commands.command()
-    @commands.check(author_is_owner) # type: ignore
+    @commands.check(author_is_owner)  # type: ignore
     async def load(self, ctx: BotContext, name: str) -> None:
         """Loads a cog."""
         try:
             self.bot.load_extension(f"monty.cogs.{name}")
         except Exception as e:
-            return await ctx.send(traceback_maker(e)) # type: ignore
+            return await ctx.send(traceback_maker(e))  # type: ignore
         await ctx.send(f"Loaded extension **{name}.py**!")
 
     @commands.command()
-    @commands.check(author_is_owner) # type: ignore
+    @commands.check(author_is_owner)  # type: ignore
     async def unload(self, ctx: BotContext, name: str) -> None:
         """Unloads a cog."""
         try:
             self.bot.unload_extension(f"monty.cogs.{name}")
         except Exception as e:
-            return await ctx.send(traceback_maker(e)) # type: ignore
+            return await ctx.send(traceback_maker(e))  # type: ignore
         await ctx.send(f"Unoaded extension **{name}.py**!")
 
     @commands.command()
-    @commands.check(author_is_owner) # type: ignore
+    @commands.check(author_is_owner)  # type: ignore
     async def reload(self, ctx: BotContext, name: str) -> None:
         """Loads a cog."""
         try:
             self.bot.reload_extension(f"monty.cogs.{name}")
         except Exception as e:
-            return await ctx.send(traceback_maker(e)) # type: ignore
+            return await ctx.send(traceback_maker(e))  # type: ignore
         await ctx.send(f"Reloaded extension **{name}.py**!")
 
     @commands.command()
-    @commands.check(author_is_owner) # type: ignore
+    @commands.check(author_is_owner)  # type: ignore
     async def reloadall(self, ctx):
         """Reloads all extensions."""
         error_collection = []

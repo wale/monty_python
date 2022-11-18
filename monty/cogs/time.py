@@ -24,7 +24,7 @@ class TimeCog(commands.Cog):
             zone = pytz.timezone(tz)
             now = datetime.now()
             local_now = now.astimezone(zone)
-            fmt = '%Y-%m-%d %H:%M:%S %z'
+            fmt = "%Y-%m-%d %H:%M:%S %z"
 
             with Session(engine) as session:
                 stmt = select(User).where(User.id == ctx.author.id)
@@ -36,12 +36,17 @@ class TimeCog(commands.Cog):
                     new_user = User(id=ctx.author.id, timezone=tz)
                     session.add(new_user)
                     session.commit()
-                    await ctx.send(f"Added your timezone! Your current time is `{local_now.strftime(fmt)}`.")
+                    await ctx.send(
+                        f"Added your timezone! Your current time is `{local_now.strftime(fmt)}`."
+                    )
                 else:
                     user.timezone = tz
                     session.add(user)
                     session.commit()
-                    await ctx.send(f"Added your timezone! Your current time is `{local_now.strftime(fmt)}`.")
+                    await ctx.send(
+                        f"Added your timezone! Your current time is `{local_now.strftime(fmt)}`."
+                    )
+
 
 def setup(bot: MontyBot):
     bot.add_cog(TimeCog(bot))

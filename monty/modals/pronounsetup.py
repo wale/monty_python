@@ -18,7 +18,7 @@ class PronounChoice(discord.ui.View):
             discord.SelectOption(label="she/her/her/hers/herself"),
             discord.SelectOption(label="they/them/their/theirs/themselves"),
             discord.SelectOption(label="Custom Pronouns"),
-            #discord.SelectOption(label="Clear Pronouns"),
+            # discord.SelectOption(label="Clear Pronouns"),
         ],
     )
     async def select_callback(self, select, interaction: discord.Interaction):
@@ -26,37 +26,37 @@ class PronounChoice(discord.ui.View):
             await interaction.response.send_modal(
                 PronounSetupModal(title="Custom Pronouns")
             )
-        #elif select.values[0] == "Clear Pronouns":
-            #user_id = interaction.user.id # type: ignore
-            
-            #with Session(engine) as session:
-        
-                #statement = sel(User, Pronoun).where(User.id == user_id).join(Pronoun)
-                #results = session.exec(statement)
-        
-                #user = results.one()
+        # elif select.values[0] == "Clear Pronouns":
+        # user_id = interaction.user.id # type: ignore
 
-                #if user == None:
-                    #await interaction.response.send_message(
-                    #    "No user field found, run `m:pronounsetup`."
-                    #)
-                    #return
-                #else:
-                    #try:
-                        #user[0].pronouns = None
+        # with Session(engine) as session:
 
-                        #session.add(user[0])
-                        #session.add(user[1])
-                        #session.commit()
-                        #session.flush([user[0], user[1]])
-                        #await interaction.response.send_message("Cleared pronouns!")
-                    #except Exception as e:
-                        #logger.error(
-                        #    f"Removing `pronouns` row in DB failed. \n{log_traceback_maker(e)}"
-                        #)
-                        #await interaction.response.send_message(
-                            #content="Removing `pronouns` row in DB failed. Pinged <@255114091360681986>."
-                        #)
+        # statement = sel(User, Pronoun).where(User.id == user_id).join(Pronoun)
+        # results = session.exec(statement)
+
+        # user = results.one()
+
+        # if user == None:
+        # await interaction.response.send_message(
+        #    "No user field found, run `m:pronounsetup`."
+        # )
+        # return
+        # else:
+        # try:
+        # user[0].pronouns = None
+
+        # session.add(user[0])
+        # session.add(user[1])
+        # session.commit()
+        # session.flush([user[0], user[1]])
+        # await interaction.response.send_message("Cleared pronouns!")
+        # except Exception as e:
+        # logger.error(
+        #    f"Removing `pronouns` row in DB failed. \n{log_traceback_maker(e)}"
+        # )
+        # await interaction.response.send_message(
+        # content="Removing `pronouns` row in DB failed. Pinged <@255114091360681986>."
+        # )
         else:
             pronoun_split = select.values[0].split("/")
 
@@ -125,7 +125,7 @@ class PronounSetupModal(discord.ui.Modal):
         )
 
     async def callback(self, interaction: discord.Interaction):
-        subject = str(self.children[0].value) # required to make type checking stfu
+        subject = str(self.children[0].value)  # required to make type checking stfu
         objectPro = self.children[1].value
         posDet = self.children[2].value
         posPro = self.children[3].value
@@ -160,7 +160,7 @@ class PronounConfirmation(discord.ui.View):
     async def confirm_callback(
         self, button: discord.Button, interaction: discord.Interaction
     ):
-        user_id = interaction.user.id # type: ignore
+        user_id = interaction.user.id  # type: ignore
         with Session(engine) as session:
             statement = sel(User, Pronoun).where(User.id == user_id).join(Pronoun)
             results = session.exec(statement)
@@ -170,7 +170,7 @@ class PronounConfirmation(discord.ui.View):
                 if user == None:
                     try:
                         pronouns = Pronoun(
-                            subj=str(self.pronouns[0]), # type: ignore
+                            subj=str(self.pronouns[0]),  # type: ignore
                             obj=str(self.pronouns[1]),
                             posDet=str(self.pronouns[2]),
                             posPro=str(self.pronouns[3]),

@@ -83,8 +83,6 @@ class Events(commands.Cog):
 
         elif isinstance(err, errors.CommandNotFound):
             pass
-        
-
 
     @commands.Cog.listener()
     async def on_message(self, message: discord.Message):
@@ -108,7 +106,7 @@ class Events(commands.Cog):
     async def on_command(self, ctx: BotContext):
         try:
             logger.debug(
-                f"{ctx.guild.name} > {ctx.author} > {ctx.message.clean_content}" # type: ignore
+                f"{ctx.guild.name} > {ctx.author} > {ctx.message.clean_content}"  # type: ignore
             )
         except AttributeError:
             logger.debug(

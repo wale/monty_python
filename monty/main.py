@@ -12,6 +12,7 @@ config_class.load()
 
 config = config_class.get_config()
 
+
 async def run() -> None:
 
     bot = MontyBot(

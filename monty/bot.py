@@ -11,9 +11,9 @@ from monty.util.traceback import log_traceback_maker
 
 class MontyBot(bridge.AutoShardedBot):
     def __init__(self, *args, prefix: str, config: dict, **kwargs):
-        super().__init__(*args, command_prefix=prefix, **kwargs) # type: ignore
+        super().__init__(*args, command_prefix=prefix, **kwargs)  # type: ignore
         self.prefix = prefix
-        self.uptime: datetime = None # type: ignore
+        self.uptime: datetime = None  # type: ignore
         self.config = config
 
     @commands.Cog.listener()
