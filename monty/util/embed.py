@@ -23,11 +23,11 @@ class CustomEmbed(Embed):
             "description",
         )
 
-        if not hasattr(ctx, "guild"):
-            self.colour = discord.Colour(0x7289DA)
-        else:
-            self.colour = ctx.me.colour
+        embedColour = None
+        if hasattr(ctx, "guild") and ctx.guild is not None:
+            embedColour = ctx.me.top_role.colour  # type: ignore
+
         self._fields = []
-        self.type: discord.EmbedType = "rich"
+        self.type: discord.EmbedType = "rich"  # type: ignore
 
         super().__init__(colour=self.colour, *args, **kwargs)
