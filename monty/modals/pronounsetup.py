@@ -162,7 +162,7 @@ class PronounConfirmation(discord.ui.View):
         self, button: discord.Button, interaction: discord.Interaction
     ):
         user_id = interaction.user.id  # type: ignore
-        with Session(engine) as session:
+        with Session(engine) as session:  # type: ignore
             statement = sel(User).where(User.id == user_id)
 
             try:
