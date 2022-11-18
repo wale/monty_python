@@ -23,7 +23,7 @@ class PronounCog(commands.Cog):
             results = session.exec(statement)
 
             try:
-                user = results.one()
+                user = results.one_or_none()
                 if user == None:
                     await ctx.respond(
                         "You can start the setup by clicking the below button.",
@@ -32,7 +32,7 @@ class PronounCog(commands.Cog):
                 else:
                     pronouns = user[0].pronouns
                     content_format = "Your pronouns are: **"
-                    content_format += f"{pronouns.subj}/{pronouns.obj}/{pronouns.posDet}/{pronouns.posPro}/{pronouns.refl}"
+                    content_format += f"{pronouns.subj}/{pronouns.obj}/{pronouns.posDet}/{pronouns.posPro}/{pronouns.refl}" # type: ignore
                     content_format += "** \n"
                     content_format += (
                         "You can start the setup anyway by clicking the below button."

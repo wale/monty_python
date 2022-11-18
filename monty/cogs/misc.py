@@ -10,7 +10,7 @@ class Misc(commands.Cog):
         self.bot = bot
 
     @commands.command()
-    async def hug(ctx: BotContext, user: discord.User) -> None:
+    async def hug(self, ctx: BotContext, user: discord.User) -> None:
         """Hugs a given user."""
         await ctx.send(f"<@{ctx.author.id}> hugged <@{user.id}>.")
 

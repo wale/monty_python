@@ -17,4 +17,5 @@
         "E": "Error"
     },
     "discord.enabled": false,
+    "python.analysis.typeCheckingMode": "basic"
 }

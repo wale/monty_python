@@ -6,6 +6,7 @@ from discord.ext import bridge, commands
 from loguru import logger
 
 from monty.util.config import Config
+from monty.util.traceback import log_traceback_maker
 
 
 class MontyBot(bridge.AutoShardedBot):
@@ -23,4 +24,4 @@ class MontyBot(bridge.AutoShardedBot):
                     name = file[:-3]
                     self.load_extension(f"monty.cogs.{name}")
         except Exception as e:
-            logger.error(f"Could not setup hook: \n{e.with_traceback()}")
+            logger.error(f"Could not setup hook: \n{log_traceback_maker(e)}")

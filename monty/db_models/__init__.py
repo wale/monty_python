@@ -4,7 +4,7 @@ from sqlmodel import BigInteger, Column, Field, ForeignKey, Relationship, SQLMod
 
 
 class User(SQLModel, table=True):
-    id: int = Field(
+    id: Optional[int] = Field(
         default=None,
         primary_key=True,
         sa_column=Column(BigInteger(), primary_key=True, autoincrement=False),
@@ -17,9 +17,10 @@ class User(SQLModel, table=True):
 
 
 class Pronoun(SQLModel, table=True):
-    user_id: int = Field(
+    user_id: Optional[int] = Field(
         primary_key=True,
         foreign_key="user.id",
+        default=None,
         sa_column=Column(BigInteger(), ForeignKey("user.id"), primary_key=True),
     )
     user: Optional["User"] = Relationship(
@@ -30,8 +31,8 @@ class Pronoun(SQLModel, table=True):
         },
         back_populates="pronouns",
     )
-    subj: str  # Subject pronoun
-    obj: str  # Object pronoun
-    posDet: str  # Possessive determiner
-    posPro: str  # Possessive pronoun
-    refl: str  # Reflexive pronoun
+    subj: str | None  # Subject pronoun
+    obj: str | None  # Object pronoun
+    posDet: str | None  # Possessive determiner
+    posPro: str | None  # Possessive pronoun
+    refl: str | None  # Reflexive pronoun

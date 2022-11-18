@@ -108,7 +108,7 @@ class Events(commands.Cog):
     async def on_command(self, ctx: BotContext):
         try:
             logger.debug(
-                f"{ctx.guild.name} > {ctx.author} > {ctx.message.clean_content}"
+                f"{ctx.guild.name} > {ctx.author} > {ctx.message.clean_content}" # type: ignore
             )
         except AttributeError:
             logger.debug(
