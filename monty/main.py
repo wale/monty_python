@@ -7,12 +7,12 @@ from loguru import logger
 from monty.bot import MontyBot
 from monty.util.config import Config
 
+config_class = Config()
+config_class.load()
+
+config = config_class.get_config()
 
 async def run() -> None:
-    config_class = Config()
-    config_class.load()
-
-    config = config_class.get_config()
 
     bot = MontyBot(
         config=config,

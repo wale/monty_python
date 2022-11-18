@@ -1,9 +1,6 @@
 import sqlmodel
 
-from .config import Config
-
-config_class = Config()
-config = config_class.get_config()
+from monty.main import config
 
 engine = sqlmodel.create_engine(config['bot']['db']['url'])
 

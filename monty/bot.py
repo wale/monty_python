@@ -9,10 +9,10 @@ from monty.util.config import Config
 
 
 class MontyBot(bridge.AutoShardedBot):
-    def __init__(self, *args, prefix: str = None, config: dict = None, **kwargs):
-        super().__init__(*args, command_prefix=prefix, **kwargs)
+    def __init__(self, *args, prefix: str, config: dict, **kwargs):
+        super().__init__(*args, command_prefix=prefix, **kwargs) # type: ignore
         self.prefix = prefix
-        self.uptime: datetime = None
+        self.uptime: datetime = None # type: ignore
         self.config = config
 
     @commands.Cog.listener()
@@ -23,4 +23,4 @@ class MontyBot(bridge.AutoShardedBot):
                     name = file[:-3]
                     self.load_extension(f"monty.cogs.{name}")
         except Exception as e:
-            logger.error(f"Could not setup hook: \n{e}")
+            logger.error(f"Could not setup hook: \n{e.with_traceback()}")

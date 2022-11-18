@@ -83,6 +83,8 @@ class Events(commands.Cog):
 
         elif isinstance(err, errors.CommandNotFound):
             pass
+        
+
 
     @commands.Cog.listener()
     async def on_message(self, message: discord.Message):

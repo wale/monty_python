@@ -17,6 +17,7 @@ httpx = "^0.23.0"
 envtoml = "^0.1.2"
 alembic = "^1.8.1"
 sqlmodel = "^0.0.8"
+psycopg2-binary = "^2.9.5"
 
 [tool.poetry.scripts]
 monty = "monty.main:main"
@@ -27,4 +28,4 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.isort]
 profile = "black"
-extend_skip_glob = ["alembic/*"]
+extend_skip_glob = ["migrations/*"]
