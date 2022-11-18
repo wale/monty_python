@@ -1,14 +1,19 @@
+import json as jason
 import os
 import time
+from typing import Optional
 
 import discord
+import httpx
 import psutil
 from discord.ext import commands
+from loguru import logger
 
 from monty.bot import MontyBot
 from monty.util.context import BotContext
 from monty.util.date import date
 from monty.util.embed import CustomEmbed
+from monty.util.traceback import log_traceback_maker, traceback_maker
 
 
 class Info(commands.Cog):
@@ -28,6 +33,7 @@ class Info(commands.Cog):
 
     @commands.command()
     async def info(self, ctx: BotContext):
+        """Info about the bot."""
         ramUsage = self.process.memory_full_info().rss / 1024**2
         avgmembers = sum(g.member_count for g in self.bot.guilds) / len(self.bot.guilds)
 
@@ -49,6 +55,46 @@ class Info(commands.Cog):
         embed.add_field(name="RAM", value=f"{ramUsage:.2f} MB")
 
         await ctx.send(content=f"ℹ About **{ctx.bot.user}**", embed=embed)
+
+    @commands.command(aliases=["curr"])
+    async def currency(self, ctx, amount: Optional[int], source: str, target: str):
+        """Converts currency from a given currency to another."""
+        async with httpx.AsyncClient() as client:
+            try:
+                url = f"https://api.exchangerate.host/convert?from={source}&to={target}"
+                if amount != None:
+                    url += f"&amount={amount}"
+
+                resp = await client.get(url)
+                json = jason.loads(resp.text)
+
+                amount = json["result"]
+
+                from_code = json["query"]["from"]
+                to_code = json["query"]["to"]
+
+                rate = json["info"]["rate"]
+
+                date = json["date"]
+
+                symbols_resp = await client.get("https://api.exchangerate.host/symbols")
+                symbols = jason.loads(symbols_resp.text)
+
+                embed = CustomEmbed(ctx)
+                embed.title = "💱 Currency Rates"
+                embed.add_field(
+                    name="Amount",
+                    value=f"**{round(amount, 2)}** {symbols['symbols'][to_code]['description']}",  # type: ignore
+                )
+                embed.add_field(
+                    name="Rate", value=f"1 {from_code} == {round(rate, 2)} {to_code}"
+                )
+                embed.set_footer(text=f"Exchange rates correct as of {date}.")
+
+                await ctx.send(embed=embed)
+            except Exception as e:
+                logger.error(f"Currency request failed. \n {log_traceback_maker(e)}")
+                await ctx.send(traceback_maker(e))
 
 
 def setup(bot: MontyBot):

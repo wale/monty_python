@@ -51,6 +51,7 @@ class TimeCog(commands.Cog):
 
     @commands.command(aliases=["tf", "time"])
     async def timefor(self, ctx: BotContext, user: discord.User | None = None):
+        """Gets the current time for a given user or the author."""
         if user == None:
             with Session(engine) as session:
                 stmt = select(User).where(User.id == ctx.author.id)
