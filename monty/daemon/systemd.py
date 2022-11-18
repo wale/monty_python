@@ -1,4 +1,5 @@
 import os
+import shutil
 import sys
 from io import StringIO
 
@@ -13,10 +14,13 @@ def main() -> None:
     cwd = os.getcwd()
     buf = StringIO()
 
+    logger.info("Finding poetry...")
+    poetry_path = shutil.which("poetry")
+
     logger.info("Creating output folder...")
     os.makedirs(f"{cwd}{os.path.sep}gen", exist_ok=True)
     logger.info("Rendering file...")
-    ctx = Context(buf, monty_root=cwd)
+    ctx = Context(buf, monty_root=cwd, poetry_path=poetry_path)
 
     with open("gen/monty.service", "w") as f:
         tmpl.render_context(ctx)
