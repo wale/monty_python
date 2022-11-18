@@ -12,10 +12,7 @@ class User(SQLModel, table=True):
     timezone: str = Field(default=None)
     pronouns: Optional["Pronoun"] = Relationship(
         back_populates="user",
-        sa_relationship_kwargs={
-            "uselist": False,
-            "cascade": "all, delete-orphan",
-        },
+        sa_relationship_kwargs={"uselist": False},
     )
 
 
@@ -29,7 +26,6 @@ class Pronoun(SQLModel, table=True):
     user: Optional["User"] = Relationship(
         sa_relationship_kwargs={
             "uselist": False,
-            "cascade": "all, delete-orphan",
             "single_parent": True,
         },
         back_populates="pronouns",

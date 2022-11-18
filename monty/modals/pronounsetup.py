@@ -18,7 +18,7 @@ class PronounChoice(discord.ui.View):
             discord.SelectOption(label="she/her/her/hers/herself"),
             discord.SelectOption(label="they/them/their/theirs/themselves"),
             discord.SelectOption(label="Custom Pronouns"),
-            # discord.SelectOption(label="Clear Pronouns"),
+            discord.SelectOption(label="Clear Pronouns"),
         ],
     )
     async def select_callback(self, select, interaction: discord.Interaction):
@@ -26,37 +26,38 @@ class PronounChoice(discord.ui.View):
             await interaction.response.send_modal(
                 PronounSetupModal(title="Custom Pronouns")
             )
-        # elif select.values[0] == "Clear Pronouns":
-        # user_id = interaction.user.id # type: ignore
+        elif select.values[0] == "Clear Pronouns":
+            user_id = interaction.user.id  # type: ignore
 
-        # with Session(engine) as session:
+            with Session(engine) as session:
 
-        # statement = sel(User, Pronoun).where(User.id == user_id).join(Pronoun)
-        # results = session.exec(statement)
+                statement = sel(User, Pronoun).where(User.id == user_id).join(Pronoun)
+                results = session.exec(statement)
 
-        # user = results.one()
+                user = results.one()
 
-        # if user == None:
-        # await interaction.response.send_message(
-        #    "No user field found, run `m:pronounsetup`."
-        # )
-        # return
-        # else:
-        # try:
-        # user[0].pronouns = None
+                if user == None:
+                    await interaction.response.send_message(
+                        "No user field found, run `m:pronounsetup`."
+                    )
+                    return
+                else:
+                    try:
+                        stmt = sel(Pronoun).where(Pronoun.user_id == user_id)
+                        res = session.exec(stmt)
 
-        # session.add(user[0])
-        # session.add(user[1])
-        # session.commit()
-        # session.flush([user[0], user[1]])
-        # await interaction.response.send_message("Cleared pronouns!")
-        # except Exception as e:
-        # logger.error(
-        #    f"Removing `pronouns` row in DB failed. \n{log_traceback_maker(e)}"
-        # )
-        # await interaction.response.send_message(
-        # content="Removing `pronouns` row in DB failed. Pinged <@255114091360681986>."
-        # )
+                        pro = res.one()
+
+                        session.delete(pro)
+                        session.commit()
+                        await interaction.response.send_message("Cleared pronouns!")
+                    except Exception as e:
+                        logger.error(
+                            f"Removing `pronouns` row in DB failed. \n{log_traceback_maker(e)}"
+                        )
+                        await interaction.response.send_message(
+                            content="Removing `pronouns` row in DB failed. Pinged <@255114091360681986>."
+                        )
         else:
             pronoun_split = select.values[0].split("/")
 
@@ -162,11 +163,12 @@ class PronounConfirmation(discord.ui.View):
     ):
         user_id = interaction.user.id  # type: ignore
         with Session(engine) as session:
-            statement = sel(User, Pronoun).where(User.id == user_id).join(Pronoun)
-            results = session.exec(statement)
+            statement = sel(User).where(User.id == user_id)
 
             try:
+                results = session.exec(statement)
                 user = results.one_or_none()
+
                 if user == None:
                     try:
                         pronouns = Pronoun(
@@ -188,27 +190,49 @@ class PronounConfirmation(discord.ui.View):
                             content="Creating user in DB failed. Pinged <@255114091360681986>."
                         )
                 else:
-                    try:
-                        user[1].subj = str(self.pronouns[0])
-                        user[1].obj = str(self.pronouns[1])
-                        user[1].posDet = str(self.pronouns[2])
-                        user[1].posPro = str(self.pronouns[3])
-                        user[1].refl = str(self.pronouns[4])
+                    if user.pronouns != None:
+                        try:
+                            user.pronouns.subj = str(self.pronouns[0])
+                            user.pronouns.obj = str(self.pronouns[1])
+                            user.pronouns.posDet = str(self.pronouns[2])
+                            user.pronouns.posPro = str(self.pronouns[3])
+                            user.pronouns.refl = str(self.pronouns[4])
 
-                        session.add(user[0])
-                        session.add(user[1])
-                        session.commit()
+                            session.add(user)
+                            session.commit()
 
-                        await interaction.response.send_message(
-                            "Pronouns have been submitted to DB!"
-                        )
-                    except Exception as e:
-                        logger.error(
-                            f"Updating user in DB failed. \n{log_traceback_maker(e)}"
-                        )
-                        await interaction.response.send_message(
-                            content="Updating user in DB failed. Pinged <@255114091360681986>."
-                        )
+                            await interaction.response.send_message(
+                                "Pronouns have been submitted to DB!"
+                            )
+                        except Exception as e:
+                            logger.error(
+                                f"Updating user in DB failed. \n{log_traceback_maker(e)}"
+                            )
+                            await interaction.response.send_message(
+                                content="Updating user in DB failed. Pinged <@255114091360681986>."
+                            )
+                    else:
+                        try:
+                            pronouns = Pronoun(
+                                subj=str(self.pronouns[0]),  # type: ignore
+                                obj=str(self.pronouns[1]),
+                                posDet=str(self.pronouns[2]),
+                                posPro=str(self.pronouns[3]),
+                                refl=str(self.pronouns[4]),
+                            )
+
+                            user.pronouns = pronouns
+
+                            session.add(user)
+                            session.commit()
+                        except Exception as e:
+                            logger.error(
+                                f"Updating user in DB failed. \n{log_traceback_maker(e)}"
+                            )
+                            await interaction.response.send_message(
+                                content="Updating user in DB failed. Pinged <@255114091360681986>."
+                            )
+
             except Exception as e:
                 logger.error(f"Updating user in DB failed. \n{log_traceback_maker(e)}")
                 await interaction.response.send_message(
