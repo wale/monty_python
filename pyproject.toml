@@ -23,6 +23,7 @@ humanize = "^4.4.0"
 
 [tool.poetry.scripts]
 monty = "monty.main:main"
+monty_systemd = "monty.daemon.systemd:main"
 
 [build-system]
 requires = ["poetry-core"]

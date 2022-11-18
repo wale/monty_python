@@ -168,3 +168,6 @@ poetry.lock
 
 # Environment variables
 .env
+
+# Generated systemd services
+gen/
