@@ -72,7 +72,7 @@ class TimeCog(commands.Cog):
                 result = session.exec(stmt)
 
                 db_user = result.one_or_none()
-                if db_user == None:
+                if db_user == None or db_user.timezone == None:
                     await ctx.send("They do not have a timezone set.")
                 elif db_user.pronouns == None:
                     tz = db_user.timezone
