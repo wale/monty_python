@@ -194,12 +194,19 @@ class PronounConfirmation(discord.ui.View):
 
                         session.add(user)
                         session.commit()
+                        await interaction.response.edit_message(
+                            content="Pronouns have been submitted!",
+                            view=None,
+                            embed=None,
+                        )
                     except Exception as e:
                         logger.error(
                             f"Creating user in DB failed. \n{log_traceback_maker(e)}"
                         )
                         await interaction.response.edit_message(
                             content="Creating user in DB failed. Pinged <@255114091360681986>.",
+                            embed=None,
+                            view=None,
                         )
                 else:
                     if user.pronouns != None:
@@ -214,7 +221,9 @@ class PronounConfirmation(discord.ui.View):
                             session.commit()
 
                             await interaction.response.edit_message(
-                                content="Pronouns have been submitted to DB!",
+                                content="Pronouns have been submitted!",
+                                view=None,
+                                embed=None,
                             )
                         except Exception as e:
                             logger.error(
@@ -222,6 +231,8 @@ class PronounConfirmation(discord.ui.View):
                             )
                             await interaction.response.edit_message(
                                 content="Updating user in DB failed.",
+                                view=None,
+                                embed=None,
                             )
                     else:
                         try:
@@ -241,15 +252,16 @@ class PronounConfirmation(discord.ui.View):
                             logger.error(
                                 f"Updating user in DB failed. \n{log_traceback_maker(e)}"
                             )
-                            await interaction.response.send_message(
-                                content="Updating user in DB failed. Pinged <@255114091360681986>.",
-                                ephemeral=True,
+                            await interaction.response.edit_message(
+                                content="Updating user in DB failed.",
+                                view=None,
+                                embed=None,
                             )
 
             except Exception as e:
                 logger.error(f"Updating user in DB failed. \n{log_traceback_maker(e)}")
-                await interaction.response.send_message(
-                    content="Updating user in DB failed. Pinged <@255114091360681986>."
+                await interaction.response.edit_message(
+                    content="Updating user in DB failed.", embed=None, view=None
                 )
 
     @discord.ui.button(label="Cancel", row=0, style=discord.ButtonStyle.danger)
