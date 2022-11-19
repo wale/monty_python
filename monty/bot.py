@@ -18,10 +18,12 @@ class MontyBot(bridge.AutoShardedBot):
 
     @commands.Cog.listener()
     async def on_connect(self) -> None:
+        logger.info("Starting Monty...")
         try:
             for file in os.listdir("monty/cogs"):
                 if file.endswith(".py") and not file.startswith("__init__"):
                     name = file[:-3]
                     self.load_extension(f"monty.cogs.{name}")
+                    self.auto_sync_commands = True
         except Exception as e:
             logger.error(f"Could not setup hook: \n{log_traceback_maker(e)}")

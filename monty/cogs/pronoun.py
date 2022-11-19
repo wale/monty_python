@@ -14,10 +14,10 @@ class PronounCog(commands.Cog):
     def __init__(self, bot) -> None:
         self.bot = bot
 
-    @bridge.bridge_command()
-    async def pronounsetup(self, ctx: bridge.BridgeExtContext) -> None:
+    @commands.slash_command()
+    async def pronounsetup(self, ctx: discord.ApplicationContext) -> None:
         """Setup function for user-provided pronouns."""
-        user_id = ctx.author.id
+        user_id = ctx.author.id  # type: ignore
         with Session(engine) as session:
             statement = select(User, Pronoun).where(User.id == user_id).join(Pronoun)
             results = session.exec(statement)
@@ -28,6 +28,7 @@ class PronounCog(commands.Cog):
                     await ctx.respond(
                         "You can start the setup by clicking the below button.",
                         view=EntryView(),
+                        ephemeral=True,
                     )
                 else:
                     pronouns = user[0].pronouns
@@ -37,7 +38,7 @@ class PronounCog(commands.Cog):
                     content_format += (
                         "You can start the setup anyway by clicking the below button."
                     )
-                    await ctx.respond(content_format, view=EntryView())
+                    await ctx.respond(content_format, view=EntryView(), ephemeral=True)
             except Exception as e:
                 logger.error(
                     f"Logger when accessing database. {log_traceback_maker(e)}"

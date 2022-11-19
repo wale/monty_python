@@ -198,8 +198,8 @@ class PronounConfirmation(discord.ui.View):
                         logger.error(
                             f"Creating user in DB failed. \n{log_traceback_maker(e)}"
                         )
-                        await interaction.response.send_message(
-                            content="Creating user in DB failed. Pinged <@255114091360681986>."
+                        await interaction.response.edit_message(
+                            content="Creating user in DB failed. Pinged <@255114091360681986>.",
                         )
                 else:
                     if user.pronouns != None:
@@ -213,15 +213,15 @@ class PronounConfirmation(discord.ui.View):
                             session.add(user)
                             session.commit()
 
-                            await interaction.response.send_message(
-                                "Pronouns have been submitted to DB!"
+                            await interaction.response.edit_message(
+                                content="Pronouns have been submitted to DB!",
                             )
                         except Exception as e:
                             logger.error(
                                 f"Updating user in DB failed. \n{log_traceback_maker(e)}"
                             )
-                            await interaction.response.send_message(
-                                content="Updating user in DB failed. Pinged <@255114091360681986>."
+                            await interaction.response.edit_message(
+                                content="Updating user in DB failed.",
                             )
                     else:
                         try:
@@ -242,7 +242,8 @@ class PronounConfirmation(discord.ui.View):
                                 f"Updating user in DB failed. \n{log_traceback_maker(e)}"
                             )
                             await interaction.response.send_message(
-                                content="Updating user in DB failed. Pinged <@255114091360681986>."
+                                content="Updating user in DB failed. Pinged <@255114091360681986>.",
+                                ephemeral=True,
                             )
 
             except Exception as e:
@@ -255,7 +256,6 @@ class PronounConfirmation(discord.ui.View):
     async def cancel_callback(
         self, button: discord.Button, interaction: discord.Interaction
     ):
-        if self.user_id != interaction.user.id:  # type: ignore
-            return
-        else:
-            await interaction.delete_original_message()
+        await interaction.response.edit_message(
+            content="Cancelled.", embed=None, view=None
+        )
