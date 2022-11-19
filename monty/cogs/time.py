@@ -74,11 +74,7 @@ class TimeCog(commands.Cog):
                 db_user = result.one_or_none()
                 if db_user == None or db_user.timezone == None:
                     await ctx.send("They do not have a timezone set.")
-                elif (
-                    db_user != None
-                    and db_user.pronouns != None
-                    and db_user.timezone == None
-                ):
+                elif db_user.pronouns != None and db_user.timezone == None:
                     pro = db_user.pronouns.subject
                     await ctx.send(f"{pro.capitalize()} does not have a timezone set.")
                 elif db_user.pronouns == None:
