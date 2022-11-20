@@ -59,7 +59,7 @@ class Info(commands.Cog):
         await ctx.send(content=f"ℹ About **{ctx.bot.user}**", embed=embed)
 
     @commands.command(aliases=["curr"])
-    async def currency(self, ctx, amount: Optional[int], source: str, target: str):
+    async def currency(self, ctx, amount: float | int | None, source: str, target: str):
         """Converts currency from a given currency to another."""
         async with httpx.AsyncClient() as client:
             try:
