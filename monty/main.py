@@ -14,7 +14,6 @@ config = config_class.get_config()
 
 
 async def run() -> None:
-
     bot = MontyBot(
         config=config,
         prefix=config["bot"]["prefixes"],

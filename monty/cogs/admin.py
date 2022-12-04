@@ -1,5 +1,6 @@
 import ast
 import os
+import re
 import sys
 import time
 
@@ -109,9 +110,8 @@ class Admin(commands.Cog):
         """
         fn_name = "_eval_expr"
 
-        cmd = cmd.strip("` ")
-        cmd = cmd.strip("```")
-        cmd = cmd.strip("```py")
+        cmd = re.sub(r"```.*?```", "", cmd, 0, re.MULTILINE)
+        cmd = re.sub(r"`.*?`", "", cmd, 0)
 
         # add a layer of indentation
         cmd = "\n".join(f"    {i}" for i in cmd.splitlines())
@@ -131,6 +131,7 @@ class Admin(commands.Cog):
             "ctx": ctx,
             "__import__": __import__,
         }
+
         exec(compile(parsed, filename="<ast>", mode="exec"), env)
 
         result = await eval(f"{fn_name}()", env)
