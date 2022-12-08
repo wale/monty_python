@@ -6,6 +6,7 @@ from loguru import logger
 
 from monty.bot import MontyBot
 from monty.util.config import Config
+from monty.util.help import MontyHelpCommand
 
 config_class = Config()
 config_class.load()
@@ -22,6 +23,7 @@ async def run() -> None:
             roles=False, users=True, everyone=False
         ),
         intents=discord.Intents.all(),
+        help_command=MontyHelpCommand(),
     )
 
     try:
