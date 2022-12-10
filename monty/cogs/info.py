@@ -60,7 +60,19 @@ class Info(commands.Cog):
 
     @commands.command(aliases=["curr"])
     async def currency(self, ctx, amount: float | int | None, source: str, target: str):
-        """Converts currency from a given currency to another."""
+        """Converts currency from a given currency to another.
+
+        Parameters
+        ---------
+        amount: float or int, optional
+            An optional amount of the `source` currency to convert.
+        source: str
+            The three letter code that represents a single currency to convert **from**.
+            Examples include `AED`, `USD`, `EUR`.
+        target: str
+            The three letter code that represents a single currency to convert **to**.
+            Examples include `GBP`, `NZD`, `CAD`.
+        """
         async with httpx.AsyncClient() as client:
             try:
                 url = f"https://api.exchangerate.host/convert?from={source}&to={target}"

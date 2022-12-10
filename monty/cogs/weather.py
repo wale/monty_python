@@ -19,7 +19,15 @@ class Weather(commands.Cog):
 
     @commands.command()
     async def weather(self, ctx: BotContext, *location):
-        """Provides weather data, sourced from OpenWeatherMap."""
+        """Provides weather data, sourced from OpenWeatherMap.
+
+        Parameters
+        ----------
+        *args : :class:`tuple`
+            Additional arguments for the location that take up the rest of the command.
+            Must match the format of ``<city> [state] [two-letter-country-code]``, without commas.
+            Examples include ``Sydney``, ``Melbourne AU``, ``Croydon VIC AU``.
+        """
         key = self.bot.config["bot"]["api"]["openWeatherMap"]
 
         if len(location) == 0:

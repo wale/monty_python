@@ -18,7 +18,15 @@ class TimeCog(commands.Cog):
 
     @commands.command(aliases=["tzsetup"])
     async def timesetup(self, ctx: BotContext, tz: str):
-        """Set up the timezone for a user."""
+        """Set up the timezone for a user.
+
+        Parameters
+        ----------
+        tz: :class:`str`
+            The relevant timezone in TZDB format, e.g. `Asia/Kolkata`, `Etc/Gmt+12`.
+            If the user provides a timezone with `Etc/` format, it will not automatically
+            change with timezone changes. (e.g. seasonal daylight savings time)
+        """
         if tz not in pytz.all_timezones:
             await ctx.send("**Error**: Not a valid timezone.")
         else:
@@ -51,7 +59,13 @@ class TimeCog(commands.Cog):
 
     @commands.command(aliases=["tf", "time"])
     async def timefor(self, ctx: BotContext, user: discord.User | None = None):
-        """Gets the current time for a given user or the author."""
+        """Gets the current time for a given user or the author.
+
+        Parameters
+        ----------
+        user: :class:`discord.User`, optional
+            The user to retrieve the current time for. If not provided, it retrieves the author's time.
+        """
         if user == None:
             with Session(engine) as session:
                 stmt = select(User).where(User.id == ctx.author.id)

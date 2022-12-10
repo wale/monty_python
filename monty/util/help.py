@@ -1,5 +1,8 @@
 import discord
 from discord.ext import commands, pages
+from docstring_parser import parse
+
+from monty.util.embed import CustomEmbed
 
 
 class MontyHelpCommand(commands.HelpCommand):
@@ -48,3 +51,30 @@ class MontyHelpCommand(commands.HelpCommand):
 
         paginator = pages.Paginator(pages=help_pages)
         await paginator.send(ctx=self.context, target=self.get_destination())
+
+    async def send_command_help(self, command):
+
+        embed = discord.Embed(title=command.name)
+        if command.help:
+            parsed = parse(command.help)
+
+            formatted_help = f"""
+            {parsed.short_description}
+            """
+
+            if parsed.long_description:
+                formatted_help += parsed.long_description
+
+            for arg in parsed.params:
+                type_name = arg.type_name.replace(":class:`", "").replace("`", "")
+                formatted_help += (
+                    f"**{arg.arg_name}** (`{type_name}`) - {arg.description}"
+                )
+
+            if alias := command.aliases:
+                embed.add_field(name="Aliases", value=", ".join(alias), inline=False)
+
+            embed.description = formatted_help.strip()
+
+        channel = self.get_destination()
+        await channel.send(embed=embed)
