@@ -44,7 +44,9 @@ class MontyHelpCommand(commands.HelpCommand):
                 embed.title = f"Help | {cog_name}"
                 for c in command_signatures:
                     embed.add_field(
-                        name=f"{c[0]}{c[1]} {c[2]}", value=c[3], inline=True
+                        name=f"{c[0]}{c[1]} {c[2]}",
+                        value=f"{parse(c[3]).short_description}",
+                        inline=True,
                     )
                 page = pages.Page(embeds=[embed])
                 help_pages.append(page)
