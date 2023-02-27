@@ -1,3 +1,5 @@
+# ARCHIVED, SEE REWRITE: https://github.com/wale/monty
+
 # Monty
 
 This is a custom Discord bot for a few servers I chat in.
